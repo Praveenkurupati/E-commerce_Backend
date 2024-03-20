@@ -5,19 +5,11 @@ const orderControllerGet = require("./../Controllers/Order_management/Get");
 const orderControllerUpdate = require("./../Controllers/Order_management/Update");
 const orderControllerDelete = require("./../Controllers/Order_management/Delete");
 
-const verifyToken = require("../../auth/authMiddleware");
-
-router.post("/orderPost", verifyToken, orderControllerPost.);
-router.get("/orders", verifyToken, orderControllerGet.getAllUsers);
-router.put(
-  "/order/update/:id",
-  verifyToken,
-  orderControllerUpdate.updateUserById
-);
-router.delete(
-  "/order/delete/:id",
-  verifyToken,
-  orderControllerDelete.deleteUserById
-);
+router.post("/orderPost", orderControllerPost.createOrder);
+router.get("/orders", orderControllerGet.getAllOrders);
+router.get("/order/dayOrders", orderControllerGet.getOrdersCountForDay);
+router.get("/orders/dayRevenue", orderControllerGet.getRevenueForDay);
+router.put("/order/update/:id", orderControllerUpdate.updateOrderStatus);
+router.delete("/order/delete/:id", orderControllerDelete.deleteOrder);
 
 module.exports = router;

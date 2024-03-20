@@ -12,10 +12,12 @@ app.use(express.json());
 
 const loginRoute = require("./routes/loginRoute");
 const UserRoute = require("./Routes/UserRoutes");
+const CategoryRoute = require("./Routes/categoryRoutes");
 
 // Routes
 app.use("/", loginRoute);
 app.use("/", UserRoute);
+app.use("/", CategoryRoute);
 
 sequelize
   .authenticate()

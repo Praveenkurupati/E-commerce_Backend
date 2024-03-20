@@ -1,12 +1,21 @@
-const { User } = require("../../Models/User");
+const Order = require("../../Models/Order");
 
-// Create a new user
-exports.createUser = async (req, res) => {
+// Controller for creating a new order
+exports.createOrder = async (req, res) => {
   try {
-    const { name, email, mobileNo, password } = req.body;
-    const newUser = await User.create({ name, email, mobileNo, password });
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    const { totalAmount, productIds } = req.body; // Destructuring totalAmount and productIds from request body
+
+    // Creating a new order in the database
+    const createdOrder = await Order.create({
+      totalAmount,
+      productIds,
+    });
+
+    res.status(201).json({ message: "Order created", order: createdOrder }); // Sending success response
+  } catch (err) {
+    // Handling error
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: err.message });
   }
 };

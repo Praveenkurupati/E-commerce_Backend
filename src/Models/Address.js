@@ -1,37 +1,32 @@
+// Import necessary Sequelize modules
 const { DataTypes } = require("sequelize");
-const sequelize = require("../DataBase/config");
+const sequelize = require("../config/database"); // Assuming you have a configuration file for Sequelize
 const { User } = require("./User");
 
-const Address = sequelize.define("address", {
+// Define the Address model
+const Address = sequelize.define("Address", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
-    allowNull: false,
   },
-  name: {
+  address: {
     type: DataTypes.STRING,
-    allowNull: false,
-  },
-  addressDetails: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  mobileNo: {
-    type: DataTypes.BIGINT,
     allowNull: false,
   },
   addressType: {
-    type: DataTypes.ENUM("Home", "Work", "Other"),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: User, // Assuming you have a User model
+      key: "id",
+    },
   },
 });
-Address.belongsTo(User);
 
-module.exports = {
-  Address,
-};
+// Export the Address model
+module.exports = Address;

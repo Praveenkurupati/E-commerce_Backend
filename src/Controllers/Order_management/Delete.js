@@ -1,18 +1,24 @@
-const { User } = require("../../Models/User");
+const Order = require("../../Models/Order");
 
-// Delete user by ID
-exports.deleteUserById = async (req, res) => {
-  const { id } = req.params;
+// Controller for deleting an order by id
+exports.deleteOrder = async (req, res) => {
   try {
-    const deleted = await User.destroy({
+    const { id } = req.params; // Extracting order id from request parameters
+
+    // Deleting the order from the database
+    const deletedCount = await Order.destroy({
       where: { id },
     });
-    if (deleted) {
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "User not found" });
+
+    if (deletedCount === 0) {
+      return res.status(404).json({ message: "Order not found" }); // If order is not found
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+
+    res.json({ message: "Order deleted successfully" }); // Sending success response
+  } catch (err) {
+    // Handling error
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: err.message });
   }
 };

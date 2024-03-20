@@ -1,16 +1,22 @@
-const { User } = require("../../Models/User");
+const Order = require("../../Models/Order");
 
-// Get user by ID
-exports.getUserById = async (req, res) => {
-  const { id } = req.params;
+// Controller for getting an order by id
+exports.getOrderById = async (req, res) => {
   try {
-    const user = await User.findByPk(id);
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-    } else {
-      res.status(200).json(user);
+    const { id } = req.params; // Extracting order id from request parameters
+
+    // Finding the order by id in the database
+    const order = await Order.findByPk(id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" }); // If order is not found
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+
+    res.json({ order }); // Sending success response with order data
+  } catch (err) {
+    // Handling error
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: err.message });
   }
 };
